@@ -128,7 +128,7 @@ void loop(){
     msgtaille=RetourRaspPi.lastIndexOf("}");
     message=RetourRaspPi.substring(0+12, msgtaille-1);
     Serial.println("Vous avez recu un message de l'ecurie:"+message);
-    testmess=1;
+    
     delay(3000);
     msgtaille=-1;
   }
@@ -141,7 +141,7 @@ void loop(){
           
           Serial.println("Vous avez recu un message de l'ecurie:"+message);
           delay(3000);
-          testmess=1;
+          
                     
        }
   else
