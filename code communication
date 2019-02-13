@@ -38,7 +38,7 @@ int BPR;
 String message;
 int baterie;         
 float CurrentValue;            
-int testmess; 
+
 
 int rep=0;    
               
@@ -50,8 +50,7 @@ int rep=0;
 void setup()
 {   
  
-    genie.Begin(Serial2);
-    genie.WriteContrast(15);
+   
  
     Serial2.begin(9600);
     //pinMode pour les 2 boutons
@@ -61,21 +60,21 @@ void setup()
     //Serial pour la transmission sans fil
     Serial.begin(115200);       //Serial 
     ss.begin(GPSBaud);          //GPS
-    Serial1.begin(19200);       //Serial antennes
+    Serial1.begin(9600);       //Serial antennes
     Vref = readVref();          //read the reference votage(default:VCC)
     pinMode(BP_6, INPUT);
     FlexiTimer2::set(200,macro_temp);
-    testmess=0;
+    
 }
 
 void loop(){
 
-  rep=0;
-  testmess=0;
+  
   String RetourRaspPi, DemandeRaspPi; //Déclaration de 2 chaines contenant les messages de reception et de retour
   RetourRaspPi=String();//Initialisation avec rien
   DemandeRaspPi=o;
   Serial1.println(DemandeRaspPi);
+  Serial2.println(DemandeRaspPi);
  
   
   ms=0;
@@ -200,7 +199,17 @@ void loop(){
          
          
          o=String(Vmesure) + ";" + String(CurrentValue) + ";" + String(gps.location.lat(), 6) + ":" + String(gps.location.lng(), 6) + ";4;5eme;" + String(ms);
-              
+          
+          }
+          
+   
+
+      
+          
+       
+           
+       
+    }     
 
   
 
