@@ -5,7 +5,6 @@
 //genie
 #include <genieArduino.h>
 
-
 // GPS Port D10
 #include <TinyGPS++.h>
 #include <SoftwareSerial.h>
@@ -18,7 +17,6 @@ SoftwareSerial ss(RXPin, TXPin);
 unsigned char buffer[64];                   
 int count=0;  
 
- 
 //Déclaration variables
 const int currentSensorPin = A2;  //Capteur intensité 
 const int mVperAmp = 100;         //use 185 for 5A Module, and 66 for 30A Module
