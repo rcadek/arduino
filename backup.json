@@ -1,0 +1,1227 @@
+[
+    {
+        "id": "a4f481d6.61699",
+        "type": "tab",
+        "label": "Tableau de bord ",
+        "disabled": false,
+        "info": "Page principale du tableau de bord"
+    },
+    {
+        "id": "3434b36.3db024c",
+        "type": "tab",
+        "label": "Baptiste(oui c'est moi)",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "4b525a7.1d1daa4",
+        "type": "subflow",
+        "name": "Subflow 1",
+        "info": "",
+        "in": [],
+        "out": []
+    },
+    {
+        "id": "3618b163.a5496e",
+        "type": "subflow",
+        "name": "Subflow 2",
+        "info": "",
+        "in": [],
+        "out": []
+    },
+    {
+        "id": "48807f2a.9bfaf",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-dark",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#c0392b",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "reset": false
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#097479",
+                    "value": "#c0392b",
+                    "edited": true
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#c0392b",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#000000",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#db695d",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#555555",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#333333",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#eeeeee",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#c0392b",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#333333",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey"
+            }
+        },
+        "site": {
+            "name": "Tableau de bord - Challenge ÉducÉco - Lycée L. Rascol",
+            "hideToolbar": "false",
+            "allowSwipe": "true",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "345b1bbf.bc7ce4",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Tableau de bord",
+        "icon": "dns",
+        "order": 1
+    },
+    {
+        "id": "67806cdb.83c964",
+        "type": "ui_group",
+        "z": "",
+        "name": "Vitesse",
+        "tab": "345b1bbf.bc7ce4",
+        "order": 1,
+        "disp": true,
+        "width": "10",
+        "collapse": true
+    },
+    {
+        "id": "73321ea8.a7653",
+        "type": "ui_group",
+        "z": "",
+        "name": "Statistiques de la course",
+        "tab": "345b1bbf.bc7ce4",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": true
+    },
+    {
+        "id": "f1495847.6f9ed8",
+        "type": "ui_group",
+        "z": "",
+        "name": "Batterie",
+        "tab": "345b1bbf.bc7ce4",
+        "order": 2,
+        "disp": true,
+        "width": "10",
+        "collapse": true
+    },
+    {
+        "id": "ebd872e2.4fca9",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Baptiste ",
+        "icon": "build",
+        "order": 4
+    },
+    {
+        "id": "837640ca.1f124",
+        "type": "ui_group",
+        "z": "",
+        "name": "Groupe baptiste",
+        "tab": "ebd872e2.4fca9",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "2076d4e7.0f360c",
+        "type": "serial-port",
+        "z": "",
+        "serialport": "/dev/ttyUSB0",
+        "serialbaud": "19200",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": true,
+        "responsetimeout": "10000"
+    },
+    {
+        "id": "eac6c0de.41b1",
+        "type": "ui_group",
+        "z": "",
+        "name": "Communication",
+        "tab": "345b1bbf.bc7ce4",
+        "order": 4,
+        "disp": true,
+        "width": "10",
+        "collapse": true
+    },
+    {
+        "id": "3faa2169.e285ae",
+        "type": "ui_group",
+        "z": "a4f481d6.61699",
+        "name": "Default",
+        "tab": "",
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "534b9a0.d6e3568",
+        "type": "ui_group",
+        "z": "",
+        "name": "Carte",
+        "tab": "345b1bbf.bc7ce4",
+        "order": 6,
+        "disp": true,
+        "width": "26",
+        "collapse": true
+    },
+    {
+        "id": "b346f6d.3ee7108",
+        "type": "ui_group",
+        "z": "a4f481d6.61699",
+        "name": "Default",
+        "tab": "",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "2b440e46.1601d2",
+        "type": "ui_group",
+        "z": "a4f481d6.61699",
+        "name": "Default",
+        "tab": "",
+        "disp": true,
+        "width": "54",
+        "collapse": false
+    },
+    {
+        "id": "bdfe27ab.ffff28",
+        "type": "ui_group",
+        "z": "",
+        "name": "Statistique de la communication",
+        "tab": "345b1bbf.bc7ce4",
+        "order": 5,
+        "disp": true,
+        "width": "4",
+        "collapse": true
+    },
+    {
+        "id": "333fc5b1.98c58a",
+        "type": "ui_gauge",
+        "z": "a4f481d6.61699",
+        "name": "Jauge vitesse instantanée",
+        "group": "67806cdb.83c964",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Vitesse instantanée",
+        "label": "km/h",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "70",
+        "seg2": "90",
+        "x": 390,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "428869a5.5cfa18",
+        "type": "comment",
+        "z": "a4f481d6.61699",
+        "name": "Vitesse",
+        "info": "",
+        "x": 90,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "b97487a6.482c98",
+        "type": "comment",
+        "z": "a4f481d6.61699",
+        "name": "Statistiques de la course",
+        "info": "",
+        "x": 140,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "6323a818.a74d58",
+        "type": "ui_text",
+        "z": "a4f481d6.61699",
+        "group": "67806cdb.83c964",
+        "order": 3,
+        "width": "10",
+        "height": "1",
+        "name": "Compteur vitesse moyenne",
+        "label": "Vitesse moyenne",
+        "format": "{{msg.average_speed}} km/h",
+        "layout": "row-spread",
+        "x": 980,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "63e1ac70.ce4224",
+        "type": "ui_text",
+        "z": "a4f481d6.61699",
+        "group": "67806cdb.83c964",
+        "order": 4,
+        "width": "10",
+        "height": "1",
+        "name": "Compteur vitesse moyenne / tours",
+        "label": "Vitesse moyenne / tours",
+        "format": "{{msg.payload}} km/h",
+        "layout": "row-spread",
+        "x": 740,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "f3d0e23.c743b2",
+        "type": "ui_slider",
+        "z": "a4f481d6.61699",
+        "name": "",
+        "label": "slider",
+        "group": "67806cdb.83c964",
+        "order": 7,
+        "width": "0",
+        "height": "0",
+        "passthru": true,
+        "outs": "all",
+        "topic": "",
+        "min": 0,
+        "max": "250",
+        "step": 1,
+        "x": 110,
+        "y": 160,
+        "wires": [
+            [
+                "63e1ac70.ce4224"
+            ]
+        ]
+    },
+    {
+        "id": "cb82dfbf.70ee3",
+        "type": "ui_slider",
+        "z": "a4f481d6.61699",
+        "name": "",
+        "label": "slider",
+        "group": "73321ea8.a7653",
+        "order": 7,
+        "width": "0",
+        "height": "0",
+        "passthru": true,
+        "outs": "all",
+        "topic": "",
+        "min": 0,
+        "max": "50",
+        "step": 1,
+        "x": 100,
+        "y": 1120,
+        "wires": [
+            [
+                "f7c1bc74.e9fde",
+                "8f9c576b.60a778",
+                "bf24b6de.1fa388",
+                "324ca7a6.e4c918"
+            ]
+        ]
+    },
+    {
+        "id": "657ad396.201a2c",
+        "type": "ui_text",
+        "z": "3434b36.3db024c",
+        "group": "837640ca.1f124",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "text",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 630,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "e5fb4360.fe26b",
+        "type": "ui_text",
+        "z": "3434b36.3db024c",
+        "group": "837640ca.1f124",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Tension",
+        "format": "{{msg.payload}} Volts",
+        "layout": "row-spread",
+        "x": 640,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "e43e312.5946bd",
+        "type": "serial in",
+        "z": "3434b36.3db024c",
+        "name": "série1",
+        "serial": "2076d4e7.0f360c",
+        "x": 70,
+        "y": 120,
+        "wires": [
+            [
+                "657ad396.201a2c",
+                "61689f50.33c18",
+                "bc515e06.d0ecb"
+            ]
+        ]
+    },
+    {
+        "id": "bf24b6de.1fa388",
+        "type": "ui_text",
+        "z": "a4f481d6.61699",
+        "group": "73321ea8.a7653",
+        "order": 3,
+        "width": "0",
+        "height": "0",
+        "name": "Compteur tours",
+        "label": "Nombre de tours",
+        "format": "{{msg.payload}} tours",
+        "layout": "row-spread",
+        "x": 370,
+        "y": 1020,
+        "wires": []
+    },
+    {
+        "id": "f7c1bc74.e9fde",
+        "type": "ui_text",
+        "z": "a4f481d6.61699",
+        "group": "73321ea8.a7653",
+        "order": 3,
+        "width": "0",
+        "height": "0",
+        "name": "Chronomètre course",
+        "label": "Chronomètre de la course",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 390,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "8f9c576b.60a778",
+        "type": "ui_text",
+        "z": "a4f481d6.61699",
+        "group": "73321ea8.a7653",
+        "order": 3,
+        "width": "0",
+        "height": "0",
+        "name": "Chronomètre tour",
+        "label": "Chronomètre du tour",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 380,
+        "y": 1140,
+        "wires": []
+    },
+    {
+        "id": "f9c0a4f4.56e8e8",
+        "type": "ui_text",
+        "z": "3434b36.3db024c",
+        "group": "837640ca.1f124",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Intensité",
+        "format": "{{msg.payload}} Ampere",
+        "layout": "row-spread",
+        "x": 640,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "ddc4d129.afb35",
+        "type": "comment",
+        "z": "a4f481d6.61699",
+        "name": "Batterie",
+        "info": "",
+        "x": 90,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "19ef4415.62c2fc",
+        "type": "ui_gauge",
+        "z": "a4f481d6.61699",
+        "name": "Charge batterie",
+        "group": "f1495847.6f9ed8",
+        "order": 2,
+        "width": "5",
+        "height": "4",
+        "gtype": "donut",
+        "title": "Charge de la batterie",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#ca3838",
+            "#e6e600",
+            "#00b500"
+        ],
+        "seg1": "15",
+        "seg2": "35",
+        "x": 480,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "61689f50.33c18",
+        "type": "function",
+        "z": "3434b36.3db024c",
+        "name": "split data",
+        "func": "var msg1={};\nvar msg2={};\nvar msg3={};\nvar msg4={};\nvar msg5={};\nvar msg6={};\nvar p_fournie = {};\no=msg.payload.split(\";\");\nmsg1.payload=o[0];\nmsg2.payload=o[1];\np_fournie.payload = o[0]*o[1];\nmsg3.payload=o[2];\nmsg4.payload=o[3];\nmsg5.payload=o[4];\nmsg6.payload=o[5];\nreturn [msg1,msg2,p_fournie,msg3,msg4,msg5,msg6];",
+        "outputs": 7,
+        "noerr": 0,
+        "x": 420,
+        "y": 340,
+        "wires": [
+            [
+                "d6d9da5f.424588",
+                "e5fb4360.fe26b"
+            ],
+            [
+                "f9c0a4f4.56e8e8",
+                "a89ebd32.d3efd"
+            ],
+            [
+                "e5f5fc2c.ffa7a"
+            ],
+            [
+                "300f0ea6.848a72",
+                "98743d94.d1437"
+            ],
+            [
+                "88016bcb.e720e8",
+                "28cec7c0.c361c8"
+            ],
+            [
+                "38943042.296b"
+            ],
+            [
+                "58fbbbed.d64594"
+            ]
+        ]
+    },
+    {
+        "id": "300f0ea6.848a72",
+        "type": "ui_text",
+        "z": "3434b36.3db024c",
+        "group": "837640ca.1f124",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Coordonnés",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 650,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "88016bcb.e720e8",
+        "type": "ui_text",
+        "z": "3434b36.3db024c",
+        "group": "837640ca.1f124",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Vitesse ",
+        "format": "{{msg.payload}} km.h",
+        "layout": "row-spread",
+        "x": 640,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "38943042.296b",
+        "type": "ui_text",
+        "z": "3434b36.3db024c",
+        "group": "837640ca.1f124",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "distance total",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 650,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "2d5ca707.429778",
+        "type": "ui_text",
+        "z": "a4f481d6.61699",
+        "group": "f1495847.6f9ed8",
+        "order": 3,
+        "width": "5",
+        "height": "2",
+        "name": "",
+        "label": "Tension de la batterie",
+        "format": "{{msg.payload}} Volts",
+        "layout": "col-center",
+        "x": 240,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "57f1a23.f251d5c",
+        "type": "ui_text",
+        "z": "a4f481d6.61699",
+        "group": "f1495847.6f9ed8",
+        "order": 5,
+        "width": "0",
+        "height": "0",
+        "name": "Puissance fournie instantanée",
+        "label": "Puissance fournie instantanée",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 520,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "324ca7a6.e4c918",
+        "type": "ui_text",
+        "z": "a4f481d6.61699",
+        "group": "73321ea8.a7653",
+        "order": 3,
+        "width": "0",
+        "height": "0",
+        "name": "Distance tour",
+        "label": "Distance du tour",
+        "format": "{{msg.payload}} km",
+        "layout": "row-spread",
+        "x": 360,
+        "y": 1200,
+        "wires": []
+    },
+    {
+        "id": "57177d5e.c036a4",
+        "type": "comment",
+        "z": "a4f481d6.61699",
+        "name": "Communication avec le pilote",
+        "info": "",
+        "x": 160,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "285c93e.05b516c",
+        "type": "ui_form",
+        "z": "a4f481d6.61699",
+        "name": "Formulaire",
+        "label": "Envoyer un message au pilote",
+        "group": "eac6c0de.41b1",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Ecrire un message",
+                "value": "message",
+                "type": "text",
+                "required": false
+            }
+        ],
+        "formValue": {
+            "message": ""
+        },
+        "payload": "",
+        "submit": "Envoyer",
+        "cancel": "Annuler",
+        "topic": "topic",
+        "x": 140,
+        "y": 1300,
+        "wires": [
+            [
+                "f57bd8d4.dce218"
+            ]
+        ]
+    },
+    {
+        "id": "190ac747.d1f6a9",
+        "type": "debug",
+        "z": "3434b36.3db024c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 410,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "a2b05b18.991cc8",
+        "type": "comment",
+        "z": "a4f481d6.61699",
+        "name": "Incruster la map dans le dashboard",
+        "info": "This example shows how to embed the Worldmap \ninto a template node within the `node-red-dashboard`\n\nThe first flow creates a dashboard button that \ngenerates a randon position, with the required \nicon, and passes that to the worldmap. The\nmap is configured to automatically pan to the\nposition of any point that arrives.\n\nThe second flow initialise the dashboard template\nwith the initial map and sets it to a more square shape\nby adjusting the height.",
+        "x": 180,
+        "y": 1360,
+        "wires": []
+    },
+    {
+        "id": "105118e9.eb5a17",
+        "type": "worldmap",
+        "z": "a4f481d6.61699",
+        "name": "",
+        "lat": "43.91535",
+        "lon": "2.11352",
+        "zoom": "16",
+        "layer": "OSM",
+        "cluster": "",
+        "maxage": "",
+        "usermenu": "hide",
+        "layers": "hide",
+        "panit": "true",
+        "path": "",
+        "x": 570,
+        "y": 1460,
+        "wires": []
+    },
+    {
+        "id": "7b5105f0.cf653c",
+        "type": "inject",
+        "z": "a4f481d6.61699",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "x": 110,
+        "y": 1400,
+        "wires": [
+            [
+                "ae752199.c918d"
+            ]
+        ]
+    },
+    {
+        "id": "ae752199.c918d",
+        "type": "function",
+        "z": "a4f481d6.61699",
+        "name": "map json",
+        "func": "// Split data\ngps=msg.payload.split(\":\");\n\nmsg.payload = {\n    lat:gps[0],\n    lon:gps[1],\n    name:\"Voiture\",\n    icon:\"fa-car\",\n    iconColor: \"#FF0000\"\n};\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 380,
+        "y": 1460,
+        "wires": [
+            [
+                "105118e9.eb5a17"
+            ]
+        ]
+    },
+    {
+        "id": "116a91c6.56f94e",
+        "type": "inject",
+        "z": "a4f481d6.61699",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "",
+        "x": 110,
+        "y": 1520,
+        "wires": [
+            [
+                "444912c0.63d44c"
+            ]
+        ]
+    },
+    {
+        "id": "38e5e565.7ddfba",
+        "type": "ui_template",
+        "z": "a4f481d6.61699",
+        "group": "534b9a0.d6e3568",
+        "name": "",
+        "order": 0,
+        "width": "26",
+        "height": "10",
+        "format": "<div ng-bind-html=\"msg.payload | trusted\"></div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "templateScope": "local",
+        "x": 560,
+        "y": 1520,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "444912c0.63d44c",
+        "type": "template",
+        "z": "a4f481d6.61699",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<center>\n    <iframe \n        src=\"../worldmap\"\n        style=\"height:500px;width:1300px;\"\n    >\n    </iframe>\n</center>",
+        "x": 380,
+        "y": 1520,
+        "wires": [
+            [
+                "38e5e565.7ddfba"
+            ]
+        ]
+    },
+    {
+        "id": "d6d9da5f.424588",
+        "type": "link out",
+        "z": "3434b36.3db024c",
+        "name": "Valeur de la tension",
+        "links": [
+            "ff3737dc.076ed8"
+        ],
+        "x": 595,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "ff3737dc.076ed8",
+        "type": "link in",
+        "z": "a4f481d6.61699",
+        "name": "Valeur de la tension",
+        "links": [
+            "d6d9da5f.424588"
+        ],
+        "x": 75,
+        "y": 780,
+        "wires": [
+            [
+                "2d5ca707.429778",
+                "c26ef2ce.65afc"
+            ]
+        ]
+    },
+    {
+        "id": "c26ef2ce.65afc",
+        "type": "function",
+        "z": "a4f481d6.61699",
+        "name": "Charge batterie",
+        "func": "var load = {};\nload.payload = (msg.payload*100)/52;\nload.payload = Math.round(load.payload*10)/10;\nreturn load;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 220,
+        "y": 780,
+        "wires": [
+            [
+                "19ef4415.62c2fc"
+            ]
+        ]
+    },
+    {
+        "id": "bc515e06.d0ecb",
+        "type": "serial out",
+        "z": "3434b36.3db024c",
+        "name": "expeditattor",
+        "serial": "2076d4e7.0f360c",
+        "x": 330,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "ed090159.6fe83",
+        "type": "ui_text",
+        "z": "a4f481d6.61699",
+        "group": "f1495847.6f9ed8",
+        "order": 4,
+        "width": "5",
+        "height": "2",
+        "name": "",
+        "label": "Intensité de la batterie",
+        "format": "{{msg.payload}} Ampères",
+        "layout": "col-center",
+        "x": 240,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "a89ebd32.d3efd",
+        "type": "link out",
+        "z": "3434b36.3db024c",
+        "name": "Valeur de l'intensité",
+        "links": [
+            "28a8a5d8.b86f6a"
+        ],
+        "x": 595,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "28a8a5d8.b86f6a",
+        "type": "link in",
+        "z": "a4f481d6.61699",
+        "name": "",
+        "links": [
+            "a89ebd32.d3efd"
+        ],
+        "x": 75,
+        "y": 880,
+        "wires": [
+            [
+                "ed090159.6fe83"
+            ]
+        ]
+    },
+    {
+        "id": "fc55a1aa.4d39b",
+        "type": "function",
+        "z": "a4f481d6.61699",
+        "name": "Puissance fournie",
+        "func": "var power = {};\npower.payload = Math.round(msg.payload*100)/100;\nif(power.payload < 1000)\n{\n    power.payload = power.payload.toString() + \" Watts\";\n}\nelse if(power.payload > 1000)\n{\n    power.payload = power.payload/1000;\n    power.payload = Math.round(power.payload*10)/10\n    power.payload = power.payload.toString() + \" Kilowatts\"\n}\nreturn power;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 230,
+        "y": 920,
+        "wires": [
+            [
+                "57f1a23.f251d5c"
+            ]
+        ]
+    },
+    {
+        "id": "e5f5fc2c.ffa7a",
+        "type": "link out",
+        "z": "3434b36.3db024c",
+        "name": "Puissance absorbée",
+        "links": [
+            "b0b79d92.1bbdd"
+        ],
+        "x": 595,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "b0b79d92.1bbdd",
+        "type": "link in",
+        "z": "a4f481d6.61699",
+        "name": "",
+        "links": [
+            "e5f5fc2c.ffa7a"
+        ],
+        "x": 75,
+        "y": 920,
+        "wires": [
+            [
+                "fc55a1aa.4d39b"
+            ]
+        ]
+    },
+    {
+        "id": "98743d94.d1437",
+        "type": "link out",
+        "z": "3434b36.3db024c",
+        "name": "Coordonnées GPS",
+        "links": [
+            "29265695.147fea"
+        ],
+        "x": 595,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "29265695.147fea",
+        "type": "link in",
+        "z": "a4f481d6.61699",
+        "name": "",
+        "links": [
+            "98743d94.d1437"
+        ],
+        "x": 55,
+        "y": 1460,
+        "wires": [
+            [
+                "ae752199.c918d"
+            ]
+        ]
+    },
+    {
+        "id": "f57bd8d4.dce218",
+        "type": "serial out",
+        "z": "a4f481d6.61699",
+        "name": "expeditattor",
+        "serial": "2076d4e7.0f360c",
+        "x": 710,
+        "y": 1300,
+        "wires": []
+    },
+    {
+        "id": "7a7dfa59.50e1a4",
+        "type": "comment",
+        "z": "a4f481d6.61699",
+        "name": "Statistiques de la transmission",
+        "info": "",
+        "x": 160,
+        "y": 1600,
+        "wires": []
+    },
+    {
+        "id": "95bebc1c.7b5ca",
+        "type": "ui_text",
+        "z": "3434b36.3db024c",
+        "group": "837640ca.1f124",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Ping",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 630,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "e136686b.c2e3a8",
+        "type": "ui_text",
+        "z": "a4f481d6.61699",
+        "group": "bdfe27ab.ffff28",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Latence",
+        "format": "{{msg.payload}} ms",
+        "layout": "row-spread",
+        "x": 240,
+        "y": 1640,
+        "wires": []
+    },
+    {
+        "id": "58fbbbed.d64594",
+        "type": "link out",
+        "z": "3434b36.3db024c",
+        "name": "Valeur de la latence",
+        "links": [
+            "67ac202c.09c79"
+        ],
+        "x": 595,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "67ac202c.09c79",
+        "type": "link in",
+        "z": "a4f481d6.61699",
+        "name": "",
+        "links": [
+            "58fbbbed.d64594"
+        ],
+        "x": 55,
+        "y": 1640,
+        "wires": [
+            [
+                "e136686b.c2e3a8"
+            ]
+        ]
+    },
+    {
+        "id": "af61aa63.567238",
+        "type": "function",
+        "z": "a4f481d6.61699",
+        "name": "Total speed storage",
+        "func": "var msg;\nvar today = new Date();\nvar dd = today.getDate();\nvar mm = today.getMonth() + 1; //January is 0!\n\nvar yyyy = today.getFullYear();\nif (dd < 10) {\n  dd = '0' + dd;\n} \nif (mm < 10) {\n  mm = '0' + mm;\n} \nmsg.filename = '/home/pi/speed-history_' + dd + '_' + mm + '_' + yyyy + '.txt';\nmsg.payload = msg.payload + \";\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 370,
+        "y": 380,
+        "wires": [
+            [
+                "585eb25d.40f7fc"
+            ]
+        ]
+    },
+    {
+        "id": "585eb25d.40f7fc",
+        "type": "file",
+        "z": "a4f481d6.61699",
+        "name": "",
+        "filename": "",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "false",
+        "x": 530,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ed5d06ee.68ada8",
+        "type": "comment",
+        "z": "a4f481d6.61699",
+        "name": "average",
+        "info": "ajouter vitesse à une var \nvar = vitesse + var\ntoto++\nvar = vitesse + var \ntoto++\n\n\n\n....\n\n\nave = var / toto",
+        "x": 120,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "e78047c5.a64068",
+        "type": "function",
+        "z": "a4f481d6.61699",
+        "name": "Speed storage filename",
+        "func": "var msg;\nvar today = new Date();\nvar dd = today.getDate();\nvar mm = today.getMonth() + 1; //January is 0!\n\nvar yyyy = today.getFullYear();\nif (dd < 10) {\n  dd = '0' + dd;\n} \nif (mm < 10) {\n  mm = '0' + mm;\n} \nmsg.filename = '/home/pi/speed-history_' + dd + '_' + mm + '_' + yyyy + '.txt';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 390,
+        "y": 320,
+        "wires": [
+            [
+                "ccb86858.3776b8"
+            ]
+        ]
+    },
+    {
+        "id": "ccb86858.3776b8",
+        "type": "file in",
+        "z": "a4f481d6.61699",
+        "name": "",
+        "filename": "",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "x": 570,
+        "y": 320,
+        "wires": [
+            [
+                "d8bd4699.7a9148"
+            ]
+        ]
+    },
+    {
+        "id": "d8bd4699.7a9148",
+        "type": "function",
+        "z": "a4f481d6.61699",
+        "name": "average",
+        "func": "var i;\nmsg.total = 0;\n\nmsg.speed_array = msg.payload.split(\";\");\n\nfor (i = 0; i < msg.speed_array.length; i++) {\n    if(!isNaN(Number(msg.speed_array[i]))) {\n        msg.total = msg.total + Number(msg.speed_array[i]);\n    }\n}\n\nmsg.array_size = msg.speed_array.length - 1;\n\nmsg.average_speed_unrounded = msg.total / msg.array_size;\n\nmsg.average_speed = Math.round( msg.average_speed_unrounded * 10 ) / 10\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 740,
+        "y": 320,
+        "wires": [
+            [
+                "6323a818.a74d58"
+            ]
+        ]
+    },
+    {
+        "id": "28cec7c0.c361c8",
+        "type": "link out",
+        "z": "3434b36.3db024c",
+        "name": "Valeur de la vitesse",
+        "links": [
+            "d25407fd.645a28"
+        ],
+        "x": 595,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "d25407fd.645a28",
+        "type": "link in",
+        "z": "a4f481d6.61699",
+        "name": "Vitesse",
+        "links": [
+            "28cec7c0.c361c8"
+        ],
+        "x": 115,
+        "y": 380,
+        "wires": [
+            [
+                "af61aa63.567238",
+                "e78047c5.a64068",
+                "333fc5b1.98c58a"
+            ]
+        ]
+    }
+]
