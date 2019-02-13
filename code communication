@@ -74,7 +74,7 @@ void loop(){
   RetourRaspPi=String();//Initialisation avec rien
   DemandeRaspPi=o;
   Serial1.println(DemandeRaspPi);
-  Serial2.println(DemandeRaspPi);
+  Serial2.println(String(Vmesure) + ";" + String(CurrentValue) + ";" + String(baterie));
  
   
   ms=0;
