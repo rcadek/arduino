@@ -58,7 +58,7 @@ void setup()
     //Serial pour la transmission sans fil
     Serial.begin(115200);       //Serial 
     ss.begin(GPSBaud);          //GPS
-    Serial1.begin(9600);       //Serial antennes
+    Serial1.begin(19200);       //Serial antennes
     Vref = readVref();          //read the reference votage(default:VCC)
     pinMode(BP_6, INPUT);
     FlexiTimer2::set(200,macro_temp);
