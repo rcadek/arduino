@@ -4,7 +4,7 @@
 
 //genie
 #include <genieArduino.h>
-Genie genie;
+
 
 // GPS Port D10
 #include <TinyGPS++.h>
