@@ -1183,7 +1183,7 @@
         "type": "function",
         "z": "a4f481d6.61699",
         "name": "average",
-        "func": "var i;\nmsg.total = 0;\n\nmsg.speed_array = msg.payload.split(\";\");\n\nfor (i = 0; i < msg.speed_array.length; i++) {\n    if(!isNaN(Number(msg.speed_array[i]))) {\n        msg.total = msg.total + Number(msg.speed_array[i]);\n    }\n}\n\nmsg.array_size = msg.speed_array.length - 1;\n\nmsg.average_speed_unrounded = msg.total / msg.array_size;\n\nmsg.average_speed = Math.round( msg.average_speed_unrounded * 10 ) / 10\n\nreturn msg;\n",
+        "func": "var i;\nvar toto = 0;\nmsg.total = 0;\n\nmsg.speed_array = msg.payload.split(\";\");\n\nfor (i = 0; i < msg.speed_array.length; i++) {\n    if(!isNaN(Number(msg.speed_array[i]))) {\n        msg.total = msg.total + Number(msg.speed_array[i]);\n    } else {\n        toto = toto + 1;\n    }\n}\n\nmsg.array_size = msg.speed_array.length - 1 - toto;\n\nmsg.average_speed_unrounded = msg.total / msg.array_size;\n\nmsg.average_speed = Math.round( msg.average_speed_unrounded * 10 ) / 10\n\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "x": 740,
