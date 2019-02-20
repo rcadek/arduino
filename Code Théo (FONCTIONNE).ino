@@ -1,24 +1,22 @@
 
 //Bibliothèque
 #include <FlexiTimer2.h>
-
-//genie
 #include <genieArduino.h>
-Genie genie;
 
 // GPS Port D10
 #include <TinyGPS++.h>
 #include <SoftwareSerial.h>
 static const int RXPin = 10, TXPin = 11;
 static const uint32_t GPSBaud = 9600;
+
 // The TinyGPS++ object
 TinyGPSPlus gps;
+
 // The serial connection to the GPS device
 SoftwareSerial ss(RXPin, TXPin);
 unsigned char buffer[64];                   
 int count=0;  
 
- 
 //Déclaration variables
 const int currentSensorPin = A2;  //Capteur intensité 
 const int mVperAmp = 100;         //use 185 for 5A Module, and 66 for 30A Module
@@ -38,26 +36,25 @@ int BPR;
 String message;
 int baterie;         
 float CurrentValue;            
-int testmess; 
-
 int rep=0;    
-              
+
+          
  void macro_temp(void)
 {                          //sous programme
+
   compteur++;
+
 }
 
 void setup()
+
 {   
- 
-    genie.Begin(Serial2);
-    genie.WriteContrast(15);
- 
     Serial2.begin(9600);
     //pinMode pour les 2 boutons
     pinMode(2, INPUT);
     pinMode(4, INPUT);
     pinMode(8, INPUT);
+
     //Serial pour la transmission sans fil
     Serial.begin(115200);       //Serial 
     ss.begin(GPSBaud);          //GPS
@@ -65,49 +62,48 @@ void setup()
     Vref = readVref();          //read the reference votage(default:VCC)
     pinMode(BP_6, INPUT);
     FlexiTimer2::set(200,macro_temp);
-    testmess=0;
+
 }
+
+
+
 
 void loop(){
 
-  rep=0;
-  testmess=0;
   String RetourRaspPi, DemandeRaspPi; //Déclaration de 2 chaines contenant les messages de reception et de retour
   RetourRaspPi=String();//Initialisation avec rien
   DemandeRaspPi=o;
   Serial1.println(DemandeRaspPi);
- 
-  
+  Serial2.print(String(Vmesure) + ";" + String(CurrentValue) + ";" + String(baterie));
   ms=0;
   while (Serial1.available() < 1)// tant que on recois rien
+
       {
         delay(1);
         ms=ms+1;
         if (ms>1000)
+
           {
                break;        
           }
       }
 
- 
-  
   if(Serial1.available() < 1)//si le nombre de caractere recu est inferieur ou egal a 0
+
       {    
+
         FlexiTimer2::start();// start du compteur d'erreur d'envoie
         Serial.println("echec");
         Serial.println(compteur);
-        
-       
+
         if (compteur>299)
            {    
-            
             Serial.println("Pas de transmission");
             compteur=0;
             BPR=digitalRead(BP_6);
-            
             while (BPR==0)
                 {
-                    BPR=digitalRead(BP_6);  //fin du programme relancer EN APPUYANT SUR BP
+                  BPR=digitalRead(BP_6);  //fin du programme relancer EN APPUYANT SUR BP
                 }                           
            }
       }
@@ -116,51 +112,31 @@ void loop(){
         FlexiTimer2::stop();                   // arrete du compteur d'erreur d'envoie
         compteur=0;
       }
-  
-
-
-  
   RetourRaspPi=Serial1.readStringUntil('#'); //Reception du renvoie de l'ecuri regarder si un message est dedans et qu'il correspond au données envoyer
   Serial.println(RetourRaspPi);
   msgtaille=RetourRaspPi.lastIndexOf("{");    //test si il y a message et la taille de la donné
-  
   if (msgtaille == 0 )
   {
     msgtaille=RetourRaspPi.lastIndexOf("}");
     message=RetourRaspPi.substring(0+12, msgtaille-1);
     Serial.println("Vous avez recu un message de l'ecurie:"+message);
-    testmess=1;
     delay(3000);
     msgtaille=-1;
   }
   if(msgtaille > 0 )                          // si on recois un message
        {
-          message=RetourRaspPi.substring(msgtaille);           //séparation des données et du message
+         message=RetourRaspPi.substring(msgtaille);           //séparation des données et du message
           msgtaille=message.length();                         //relever de la taille du message
           msgtaille=msgtaille-3;                              //pour enlever les 3 derrenier caratere
           message=message.substring(12,msgtaille);            // et les 12 premier pour avoir seulement le message
-          
           Serial.println("Vous avez recu un message de l'ecurie:"+message);
           delay(3000);
-          testmess=1;
-                    
        }
   else
   {
      Serial.println(""); // retour rasp^pi
   }
-  
-  
-    if(digitalRead(BP_start)){      //Si le bouton 1 (START) est appuyé, alors la variable race_started est vraie
-        race_started = true;
-    }
-    
-    if(digitalRead(BP_stop)){       //Si le bouton 2 (STOP) est appuyé, alors la variable race_start est vraie
-        race_started = false;
-    }
-    
-                                    // Tant que la variable race_started est vraie, alors nous démarrons la transmissions des données de la voiture
-    if(race_started)
+                                     
     {
         Vcapteur=(5.0/1023.0)*analogRead(capt);   //Convertion analogique numérique
         Vmesure=(Vcapteur-2.49)/0.0681 -0.25;
@@ -168,19 +144,16 @@ void loop(){
         Serial.println(Vmesure);
         delay(250);
         if(digitalRead(BP_stop)){
-            race_started = false;
+           race_started = false;
             return ;
-        }
-        
-         // Ecriture des valeurs sur le moniteur série
+       }
+        // Ecriture des valeurs sur le moniteur série
         float CurrentValue =  readDCCurrent(currentSensorPin) ;   
         Serial.print("Intensité ");
         Serial.println(CurrentValue); 
-                
         delay(100);
         if(digitalRead(BP_stop)){
-            race_started = false;
-            
+           race_started = false;
             return ;
         }
        baterie=(Vmesure*100)/52;
@@ -188,8 +161,8 @@ void loop(){
        {
         baterie=100; 
        }
-    
-        char GPS;
+       char GPS;
+
        // CODE GPS
         Serial.print(gps.location.lat(), 6);
         Serial.print(";");
@@ -197,61 +170,44 @@ void loop(){
         smartDelay(1000);
         if (millis() > 5000 && gps.charsProcessed() < 10)
           Serial.println(F("No GPS data received: check wiring"));
-         
-         
+
          o=String(Vmesure) + ";" + String(CurrentValue) + ";" + String(gps.location.lat(), 6) + ":" + String(gps.location.lng(), 6) + ";4;5eme;" + String(ms);
-              
-
+         
           }
-          
-          genie.DoEvents();
-                            
-       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0, baterie);
-       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 1, Vmesure);
-       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 2, CurrentValue);
-      // genie.WriteObject(GENIE_OBJ_LED_DIGITS, 3, 2);
-       //genie.WriteObject(GENIE_OBJ_LED_DIGITS, 4, 8);
-       //genie.WriteObject(GENIE_OBJ_LED_DIGITS, 5, 8);
-       //genie.WriteObject(GENIE_OBJ_LED_DIGITS, 6, 7);
-       genie.WriteObject(GENIE_OBJ_GAUGE, 0, baterie);
-      // genie.WriteObject(GENIE_OBJ_ANGULAR_METER , 0, 24);
+     
 
-      
-          
-       
-           
-       
-    }
-    
-    
-
+    }     
 
 static void smartDelay(unsigned long ms)
 {
   unsigned long start = millis();
   do 
+
   {
     while (ss.available())
-      gps.encode(ss.read());
+    gps.encode(ss.read());
   } while (millis() - start < ms);
-}
 
-static void printFloat(float val, bool valid, int len, int prec)
-{
+ }
+ static void printFloat(float val, bool valid, int len, int prec)
+  {
   if (!valid)
   {
     while (len-- > 1)
-      Serial.print('*');
+    Serial.print('*');
     Serial.print(' ');
   }
+
   else
+
   {
     Serial.print(val, prec);
     int vi = abs((int)val);
     int flen = prec + (val < 0.0 ? 2 : 1); // . and -
     flen += vi >= 1000 ? 4 : vi >= 100 ? 3 : vi >= 10 ? 2 : 1;
     for (int i=flen; i<len; ++i)
-      Serial.print(' ');
+     Serial.print(' ');
+
   }
   smartDelay(0);
 }
@@ -263,9 +219,11 @@ float readDCCurrent(int Pin)
     {
       analogValueArray[index]=analogRead(Pin);
     }
+
     int i,j,tempValue;
     for (j = 0; j < 31 - 1; j ++)
     {
+
         for (i = 0; i < 31 - 1 - j; i ++)
         {
             if (analogValueArray[i] > analogValueArray[i + 1])
@@ -274,19 +232,19 @@ float readDCCurrent(int Pin)
                 analogValueArray[i] = analogValueArray[i + 1];
                 analogValueArray[i + 1] = tempValue;
             }
+
         }
+
     }
+
     float medianValue = analogValueArray[(31 - 1) / 2];
     float DCCurrentValue = (medianValue / 1024.0 * Vref - Vref / 2.0) / mVperAmp; 
     return DCCurrentValue;
 }
-
-
-
 long readVref()
+
 {
     long result;
-
     #if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328__) || defined (__AVR_ATmega328P__)
         ADMUX = _BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
     #elif defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_AT90USB1286__)
@@ -297,7 +255,6 @@ long readVref()
     #elif defined (__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
         ADMUX = _BV(MUX3) | _BV(MUX2);
     #endif
-
     #if defined(__AVR__)
         delay(2);                                        
         ADCSRA |= _BV(ADSC);                             
@@ -312,15 +269,19 @@ long readVref()
         return (3300);                                 
     #endif
 }
+
  
+
   //GPS
-  
   void clearBufferArray()                     // function to clear buffer array
+
 {
     for (int i=0; i<count;i++)
+
     {
         buffer[i]=NULL;
     }                      // clear all index of array with command NULL
+
     Serial.println(buffer[64]);
     delay(500);
 }
