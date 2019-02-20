@@ -1,0 +1,94 @@
+#include <genieArduino.h>
+Genie genie;
+String recep;
+String gg="";
+int baterie;
+float Vmesure;
+float CurrentValue;
+int taille;
+int i=0;
+int o=0;
+void setup() {
+ genie.Begin(Serial1);
+    genie.WriteContrast(15);
+ Serial2.begin(9600);
+    Serial1.begin(9600);
+    Serial.begin(9600);
+
+}
+
+void loop() {
+  if (Serial2.available()>1)
+  {
+  recep=Serial2.readString();
+  Serial.println(recep);
+  taille=recep.length();
+ 
+ 
+   
+  for (i=0 ;  i != taille+1 ; i++)
+  {
+    if (recep[i] == ';' || i==taille)
+        {
+           
+           switch (o) 
+                       {
+                        case 0:
+                        Vmesure=gg.toFloat();
+                        gg="";
+                        
+                        break;
+                        case 1:
+                        CurrentValue=gg.toFloat();
+                        gg="";
+                        break;
+                        case 2:
+                        baterie=gg.toFloat();
+                        gg="";
+                        o=-1;
+                        break;
+                       }
+         o++;
+        }  
+      else
+        {
+          gg=gg+recep[i];
+         
+        }
+    
+        
+  }
+  
+  }
+  Serial.print("Tension= ");
+ Serial.println(Vmesure);
+ Serial.print("Intensite = ");
+  Serial.println(CurrentValue);
+  Serial.print("Baterie= ");
+  Serial.println(baterie);
+
+
+
+
+    
+  
+
+
+  
+  
+  
+  
+  
+  
+       genie.DoEvents();
+                            
+       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0,  baterie);
+       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 1,  Vmesure*10);
+       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 2,  CurrentValue*10);
+      // genie.WriteObject(GENIE_OBJ_LED_DIGITS, 3, 2);
+       //genie.WriteObject(GENIE_OBJ_LED_DIGITS, 4, 8);
+       //genie.WriteObject(GENIE_OBJ_LED_DIGITS, 5, 8);
+       //genie.WriteObject(GENIE_OBJ_LED_DIGITS, 6, 7);
+       genie.WriteObject(GENIE_OBJ_GAUGE, 0, baterie);
+      // genie.WriteObject(GENIE_OBJ_ANGULAR_METER , 0, 24);
+}
