@@ -1,7 +1,6 @@
-
 //Bibliothèque
 #include <FlexiTimer2.h>
-#include <genieArduino.h>
+
 
 // GPS Port D10
 #include <TinyGPS++.h>
@@ -21,7 +20,7 @@ int count=0;
 const int currentSensorPin = A2;  //Capteur intensité 
 const int mVperAmp = 100;         //use 185 for 5A Module, and 66 for 30A Module
 const int capt = A0;              //Capteur tension
-const int BP_start = 2;           //Bouton start
+const int BP_resetD = 2;           //Bouton reset distance
 const int BP_stop = 8;            //Bouton Stop
 float Vcapteur=0;     
 float Vmesure=0;
@@ -37,7 +36,8 @@ String message;
 int baterie;         
 float CurrentValue;            
 int rep=0;    
-
+int tourprog;
+int distance;
           
  void macro_temp(void)
 {                          //sous programme
@@ -62,6 +62,8 @@ void setup()
     Vref = readVref();          //read the reference votage(default:VCC)
     pinMode(BP_6, INPUT);
     FlexiTimer2::set(200,macro_temp);
+    distance=126;
+    
 
 }
 
@@ -69,7 +71,8 @@ void setup()
 
 
 void loop(){
-
+tourprog=tourprog+1;
+Serial.println(tourprog);
   String RetourRaspPi, DemandeRaspPi; //Déclaration de 2 chaines contenant les messages de reception et de retour
   RetourRaspPi=String();//Initialisation avec rien
   DemandeRaspPi=o;
@@ -142,7 +145,7 @@ void loop(){
         Vmesure=(Vcapteur-2.49)/0.0681 -0.25;
         Serial.print("Tension ");        
         Serial.println(Vmesure);
-        delay(250);
+       
         if(digitalRead(BP_stop)){
            race_started = false;
             return ;
@@ -151,7 +154,7 @@ void loop(){
         float CurrentValue =  readDCCurrent(currentSensorPin) ;   
         Serial.print("Intensité ");
         Serial.println(CurrentValue); 
-        delay(100);
+        
         if(digitalRead(BP_stop)){
            race_started = false;
             return ;
@@ -174,8 +177,12 @@ void loop(){
          o=String(Vmesure) + ";" + String(CurrentValue) + ";" + String(gps.location.lat(), 6) + ":" + String(gps.location.lng(), 6) + ";4;5eme;" + String(ms);
          
           }
-     
-
+       digitalRead(BP_resetD);
+       Serial.println(distance);
+        if (BP_resetD == 1);
+        {
+        distance=0;
+        }
     }     
 
 static void smartDelay(unsigned long ms)
@@ -283,5 +290,5 @@ long readVref()
     }                      // clear all index of array with command NULL
 
     Serial.println(buffer[64]);
-    delay(500);
+  
 }
