@@ -1,5 +1,21 @@
 #include <genieArduino.h>
 Genie genie;
+#include <Wire.h>
+#include "DS1307.h"
+int heurea;
+int minutea;
+int seca;
+int heureb;
+int minuteb;
+int secb;
+int bp_cronostart;
+int debut=0;
+int totala;
+int totalb;
+const int BP2=2;
+DS1307 clock;//define a object of DS1307 class
+
+
 String recep;
 String gg="";
 int baterie;
@@ -8,21 +24,67 @@ float CurrentValue;
 int taille;
 int i=0;
 int o=0;
+
 void setup() {
- genie.Begin(Serial1);
+  
+    clock.begin();
+    pinMode(BP2,INPUT);
+    genie.Begin(Serial1);
     genie.WriteContrast(15);
- Serial2.begin(9600);
+    Serial2.begin(9600);
     Serial1.begin(9600);
     Serial.begin(9600);
 
 }
 
 void loop() {
-  if (Serial2.available()>1)
+  //chronometre:heure
+
+bp_cronostart=digitalRead(BP2);
+
+if (bp_cronostart == 1 && debut==0)
+      {
+         printTimeset();
+         Serial.print("Debut de la course a ");
+         Serial.print(heureb);
+         Serial.print(":");
+         Serial.print(minuteb);
+         Serial.print(":");
+         Serial.println(secb);
+         debut=1;
+         delay(3000);
+      }
+if (debut==1)
+      {
+        printTime();
+
+        
+        calcultime();
+
+        
+        Serial.print("temps course ");
+        Serial.print(heurea);
+        Serial.print(":");
+        Serial.print(minutea);
+        Serial.print(":");
+        Serial.println(seca);
+        
+   
+        bp_cronostart=digitalRead(BP2);
+        if (bp_cronostart == 1)
+              {
+                debut=0;
+                Serial.println("fin course");
+                delay(200);
+              }
+      }
+      //Reception
+ if (Serial2.available()>1)
   {
-  recep=Serial2.readString();
-  Serial.println(recep);
-  taille=recep.length();
+    
+    recep=Serial2.readString();
+    Serial.println(recep);
+    taille=recep.length();
  
  
    
@@ -61,24 +123,12 @@ void loop() {
   
   }
   Serial.print("Tension= ");
- Serial.println(Vmesure);
- Serial.print("Intensite = ");
+  Serial.println(Vmesure);
+  Serial.print("Intensite = ");
   Serial.println(CurrentValue);
   Serial.print("Baterie= ");
   Serial.println(baterie);
 
-
-
-
-    
-  
-
-
-  
-  
-  
-  
-  
   
        genie.DoEvents();
                             
@@ -86,9 +136,37 @@ void loop() {
        genie.WriteObject(GENIE_OBJ_LED_DIGITS, 1,  Vmesure*10);
        genie.WriteObject(GENIE_OBJ_LED_DIGITS, 2,  CurrentValue*10);
       // genie.WriteObject(GENIE_OBJ_LED_DIGITS, 3, 2);
-       //genie.WriteObject(GENIE_OBJ_LED_DIGITS, 4, 8);
-       //genie.WriteObject(GENIE_OBJ_LED_DIGITS, 5, 8);
+       //genie.WriteObject(GENIE_OBJ_LED_DIGITS, 4, heure);
+       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 5, minutea);
+       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 7, seca);
        //genie.WriteObject(GENIE_OBJ_LED_DIGITS, 6, 7);
        genie.WriteObject(GENIE_OBJ_GAUGE, 0, baterie);
       // genie.WriteObject(GENIE_OBJ_ANGULAR_METER , 0, 24);
+}
+
+
+//macro
+void printTimeset()
+{
+    clock.getTime();
+    heureb=clock.hour;
+    minuteb=clock.minute;
+    secb=clock.second;
+    totalb=heureb*3600+minuteb*60+secb;
+}
+void printTime()
+{
+    clock.getTime();
+    heurea=clock.hour;
+    minutea=clock.minute;
+    seca=clock.second;
+}
+void calcultime()
+{
+  totala=heurea*3600+minutea*60+seca;
+  secb=totala-totalb;
+  seca=secb%60;
+  minutea=(secb-seca)/60;
+  heurea=0;
+  
 }
