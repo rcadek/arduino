@@ -1,0 +1,97 @@
+// demo: CAN-BUS Shield, send data
+#include <mcp_can.h>
+#include <SPI.h>
+
+// the cs pin of the version after v1.1 is default to D9
+// v0.9b and v1.0 is default D10
+const int SPI_CS_PIN = 53;
+
+MCP_CAN CAN(SPI_CS_PIN);                                    // Set CS pin
+
+
+float intensite;
+char valeur;
+char message[5];
+int len=6;
+int taille=0;
+int swap=0;
+float tension;
+char carac;
+void setup()
+{
+    Serial.begin(115200);
+
+    while (CAN_OK != CAN.begin(CAN_500KBPS))              // init can bus : baudrate = 500k
+    {
+        Serial.println("CAN BUS Shield init fail");
+        Serial.println(" Init CAN BUS Shield again");
+        delay(100);
+    }
+    Serial.println("CAN BUS Shield init ok!");
+}
+
+
+
+
+
+void loop()
+{ 
+if (swap==0)
+{
+intensite=10.65;
+if (intensite >= 10.00)
+{
+  taille=5;
+}
+else 
+{
+  taille=4;
+}
+
+message[taille];
+dtostrf(intensite,taille,2,message);
+Serial.print(message[0]); 
+Serial.print(message[1]); 
+Serial.print(message[2]); 
+Serial.print(message[3]); 
+Serial.println(message[4]); 
+swap=1;
+carac='I';Serial.println(carac);
+}
+
+
+else if (swap==1)
+{
+tension=11.32;
+if (tension >= 10.00)
+{
+  taille=5;
+}
+else 
+{
+  taille=4;
+}
+
+message[taille];
+dtostrf(tension,taille,2,message);
+Serial.print(message[0]); 
+Serial.print(message[1]); 
+Serial.print(message[2]); 
+Serial.print(message[3]); 
+Serial.println(message[4]); 
+swap=0;
+carac='U';
+Serial.println(carac);
+}
+
+
+unsigned char stmp[6]={carac,message[0],message[1],message[2],message[3],message[4]};
+Serial.println("In loop");
+    // send data:  id = 0x00, standard frame, data len = 6, stmp: data buf
+    CAN.sendMsgBuf(0x70,0, 6, stmp);
+    delay(1000);                       // send data once per second  
+}
+
+/*********************************************************************************************************
+  END FILE
+*********************************************************************************************************/
