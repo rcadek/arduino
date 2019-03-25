@@ -1,0 +1,183 @@
+#include <SPI.h>
+#include "mcp_can.h"
+#include <genieArduino.h>
+Genie genie;
+#include <Wire.h>
+#include "DS1307.h"
+int heurea;
+int minutea;
+int seca;
+int heureb;
+int minuteb;
+int secb;
+int bp_cronostart;
+int debut=0;
+int totala;
+int totalb;
+const int BP2=2;
+DS1307 clock;//define a object of DS1307 class
+
+const int SPI_CS_PIN = 53;
+String messagee;
+String reception;
+
+MCP_CAN CAN(SPI_CS_PIN);
+
+
+int baterie;
+float Vmesure;
+float CurrentValue;
+int taille;
+int i=0;
+
+
+void setup() {
+  
+      while (CAN_OK != CAN.begin(CAN_500KBPS))              // init can bus : baudrate = 500k
+    {
+        Serial.println("CAN BUS Shield init fail");
+        Serial.println("Init CAN BUS Shield again");
+        delay(100);
+    }
+    Serial.println("CAN BUS Shield init ok!");
+    clock.begin();
+    pinMode(BP2,INPUT);
+    genie.Begin(Serial1);
+    genie.WriteContrast(15);
+    
+    Serial1.begin(9600);
+    Serial.begin(9600);
+
+}
+
+void loop() {
+    
+  //chronometre:heure
+
+bp_cronostart=digitalRead(BP2);
+
+if (bp_cronostart == 1 && debut==0)
+      {
+         printTimeset();
+         Serial.print("Debut de la course a ");
+         Serial.print(heureb);
+         Serial.print(":");
+         Serial.print(minuteb);
+         Serial.print(":");
+         Serial.println(secb);
+         debut=1;
+         delay(3000);
+      }
+if (debut==1)
+      {
+        printTime();
+
+        
+        calcultime();
+
+        
+        Serial.print("temps course ");
+        Serial.print(heurea);
+        Serial.print(":");
+        Serial.print(minutea);
+        Serial.print(":");
+        Serial.println(seca);
+        
+   
+        bp_cronostart=digitalRead(BP2);
+        if (bp_cronostart == 1)
+              {
+                debut=0;
+                Serial.println("fin course");
+                delay(200);
+              }
+      }
+
+
+      
+      //Reception
+
+
+
+      
+    unsigned char len = 0;
+    unsigned char buf[6];
+
+    if(CAN_MSGAVAIL == CAN.checkReceive())            // check if data coming
+    {
+        CAN.readMsgBuf(&len, buf);    // read data,  len: data length, buf: data buf
+
+      
+
+        for(int i = 0; i<len; i++)    // print the data
+        {
+            
+            char character=(buf[i]);
+            character=character-'O'+79;
+            Serial.print(character);
+            messagee=messagee+character;
+            
+            
+            
+        }
+        Serial.println();
+        Serial.println(messagee);
+        messagee="";
+    } 
+    Serial.println(buf[0]);
+   if (buf[0]=='I')
+   {
+    Serial.print("Intensite = ");
+    Serial.println(CurrentValue);
+   }
+   else if (buf[0]=='U')
+   {
+    Serial.print("Tension= ");
+    Serial.println(Vmesure);
+   }
+  
+  baterie=(Vmesure*100)/52;
+  Serial.print("Baterie= ");
+  Serial.println(baterie);
+       //écran
+  
+       genie.DoEvents();
+                            
+       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0,  baterie);
+       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 1,  Vmesure*10);
+       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 2,  CurrentValue*10);
+      // genie.WriteObject(GENIE_OBJ_LED_DIGITS, 3, 2);
+       //genie.WriteObject(GENIE_OBJ_LED_DIGITS, 4, heure);
+       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 5, minutea);
+       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 7, seca);
+       //genie.WriteObject(GENIE_OBJ_LED_DIGITS, 6, 7);
+       genie.WriteObject(GENIE_OBJ_GAUGE, 0, baterie);
+      // genie.WriteObject(GENIE_OBJ_ANGULAR_METER , 0, 24);
+}
+
+
+//macro
+void printTimeset()
+{
+    clock.getTime();
+    heureb=clock.hour;
+    minuteb=clock.minute;
+    secb=clock.second;
+    totalb=heureb*3600+minuteb*60+secb;
+}
+void printTime()
+{
+    clock.getTime();
+    heurea=clock.hour;
+    minutea=clock.minute;
+    seca=clock.second;
+}
+void calcultime()
+{
+  totala=heurea*3600+minutea*60+seca;
+  secb=totala-totalb;
+  seca=secb%60;
+  minutea=(secb-seca)/60;
+  heurea=0;
+  
+}
