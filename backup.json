@@ -173,7 +173,7 @@
         "z": "",
         "name": "Baptiste ",
         "icon": "build",
-        "order": 4
+        "order": 2
     },
     {
         "id": "837640ca.1f124",
@@ -334,7 +334,7 @@
         "width": "10",
         "height": "1",
         "name": "Compteur vitesse moyenne / tours",
-        "label": "Vitesse moyenne / tours",
+        "label": "Vitesse moyenne du tours",
         "format": "{{msg.payload}} km/h",
         "layout": "row-spread",
         "x": 740,
@@ -372,7 +372,7 @@
         "name": "",
         "label": "slider",
         "group": "73321ea8.a7653",
-        "order": 7,
+        "order": 5,
         "width": "0",
         "height": "0",
         "passthru": true,
@@ -445,7 +445,7 @@
         "type": "ui_text",
         "z": "a4f481d6.61699",
         "group": "73321ea8.a7653",
-        "order": 3,
+        "order": 1,
         "width": "0",
         "height": "0",
         "name": "Compteur tours",
@@ -461,7 +461,7 @@
         "type": "ui_text",
         "z": "a4f481d6.61699",
         "group": "73321ea8.a7653",
-        "order": 3,
+        "order": 2,
         "width": "0",
         "height": "0",
         "name": "Chronomètre course",
@@ -663,7 +663,7 @@
         "type": "ui_text",
         "z": "a4f481d6.61699",
         "group": "73321ea8.a7653",
-        "order": 3,
+        "order": 4,
         "width": "0",
         "height": "0",
         "name": "Distance tour",
@@ -681,7 +681,7 @@
         "name": "Communication avec le pilote",
         "info": "",
         "x": 160,
-        "y": 1240,
+        "y": 1320,
         "wires": []
     },
     {
@@ -710,7 +710,7 @@
         "cancel": "Annuler",
         "topic": "topic",
         "x": 140,
-        "y": 1300,
+        "y": 1380,
         "wires": [
             [
                 "f57bd8d4.dce218"
@@ -738,7 +738,7 @@
         "name": "Incruster la map dans le dashboard",
         "info": "This example shows how to embed the Worldmap \ninto a template node within the `node-red-dashboard`\n\nThe first flow creates a dashboard button that \ngenerates a randon position, with the required \nicon, and passes that to the worldmap. The\nmap is configured to automatically pan to the\nposition of any point that arrives.\n\nThe second flow initialise the dashboard template\nwith the initial map and sets it to a more square shape\nby adjusting the height.",
         "x": 180,
-        "y": 1360,
+        "y": 1440,
         "wires": []
     },
     {
@@ -757,7 +757,7 @@
         "panit": "true",
         "path": "",
         "x": 570,
-        "y": 1460,
+        "y": 1540,
         "wires": []
     },
     {
@@ -773,7 +773,7 @@
         "once": false,
         "onceDelay": "",
         "x": 110,
-        "y": 1400,
+        "y": 1480,
         "wires": [
             [
                 "ae752199.c918d"
@@ -789,7 +789,7 @@
         "outputs": 1,
         "noerr": 0,
         "x": 380,
-        "y": 1460,
+        "y": 1540,
         "wires": [
             [
                 "105118e9.eb5a17"
@@ -809,7 +809,7 @@
         "once": true,
         "onceDelay": "",
         "x": 110,
-        "y": 1520,
+        "y": 1600,
         "wires": [
             [
                 "444912c0.63d44c"
@@ -830,7 +830,7 @@
         "fwdInMessages": true,
         "templateScope": "local",
         "x": 560,
-        "y": 1520,
+        "y": 1600,
         "wires": [
             []
         ]
@@ -846,7 +846,7 @@
         "syntax": "mustache",
         "template": "<center>\n    <iframe \n        src=\"../worldmap\"\n        style=\"height:500px;width:1300px;\"\n    >\n    </iframe>\n</center>",
         "x": 380,
-        "y": 1520,
+        "y": 1600,
         "wires": [
             [
                 "38e5e565.7ddfba"
@@ -1017,7 +1017,7 @@
             "98743d94.d1437"
         ],
         "x": 55,
-        "y": 1460,
+        "y": 1540,
         "wires": [
             [
                 "ae752199.c918d"
@@ -1031,7 +1031,7 @@
         "name": "expeditattor",
         "serial": "2076d4e7.0f360c",
         "x": 710,
-        "y": 1300,
+        "y": 1380,
         "wires": []
     },
     {
@@ -1041,7 +1041,7 @@
         "name": "Statistiques de la transmission",
         "info": "",
         "x": 160,
-        "y": 1600,
+        "y": 1680,
         "wires": []
     },
     {
@@ -1073,7 +1073,7 @@
         "format": "{{msg.payload}} ms",
         "layout": "row-spread",
         "x": 240,
-        "y": 1640,
+        "y": 1720,
         "wires": []
     },
     {
@@ -1097,7 +1097,7 @@
             "58fbbbed.d64594"
         ],
         "x": 55,
-        "y": 1640,
+        "y": 1720,
         "wires": [
             [
                 "e136686b.c2e3a8"
