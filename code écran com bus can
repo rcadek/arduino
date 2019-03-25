@@ -14,7 +14,7 @@ int bp_cronostart;
 int debut=0;
 int totala;
 int totalb;
-const int BP2=2;
+const int BP2=4;
 DS1307 clock;//define a object of DS1307 class
 
 const int SPI_CS_PIN = 53;
@@ -25,15 +25,15 @@ MCP_CAN CAN(SPI_CS_PIN);
 
 
 int baterie;
-float Vmesure;
-float CurrentValue;
+float Vmesure=0.1;
+float CurrentValue=0.123;
 int taille;
 int i=0;
-
+char detector;
 
 void setup() {
   
-      while (CAN_OK != CAN.begin(CAN_500KBPS))              // init can bus : baudrate = 500k
+    while (CAN_OK != CAN.begin(CAN_500KBPS))              // init can bus : baudrate = 500k
     {
         Serial.println("CAN BUS Shield init fail");
         Serial.println("Init CAN BUS Shield again");
@@ -66,7 +66,7 @@ if (bp_cronostart == 1 && debut==0)
          Serial.print(":");
          Serial.println(secb);
          debut=1;
-         delay(3000);
+         delay(100);
       }
 if (debut==1)
       {
@@ -98,15 +98,15 @@ if (debut==1)
       //Reception
 
 
-
       
+
     unsigned char len = 0;
     unsigned char buf[6];
 
     if(CAN_MSGAVAIL == CAN.checkReceive())            // check if data coming
     {
         CAN.readMsgBuf(&len, buf);    // read data,  len: data length, buf: data buf
-
+        messagee="";
       
 
         for(int i = 0; i<len; i++)    // print the data
@@ -115,30 +115,43 @@ if (debut==1)
             char character=(buf[i]);
             character=character-'O'+79;
             Serial.print(character);
+            if (character != 'I' || character != 'U')
+            {
             messagee=messagee+character;
-            
+            }
             
             
         }
+        messagee.remove(0,1);
         Serial.println();
         Serial.println(messagee);
-        messagee="";
+       
+        
+        
     } 
-    Serial.println(buf[0]);
-   if (buf[0]=='I')
+   
+    detector=buf[0];
+    detector=detector-'O'+79;
+    Serial.println(detector);
+   if (detector=='I')
    {
     Serial.print("Intensite = ");
+    CurrentValue=messagee.toFloat();
     Serial.println(CurrentValue);
    }
-   else if (buf[0]=='U')
+   else if (detector=='U')
    {
     Serial.print("Tension= ");
+    Vmesure=messagee.toFloat();
     Serial.println(Vmesure);
    }
   
   baterie=(Vmesure*100)/52;
   Serial.print("Baterie= ");
   Serial.println(baterie);
+
+      
+    
        //écran
   
        genie.DoEvents();
