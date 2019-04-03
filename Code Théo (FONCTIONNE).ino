@@ -1,6 +1,6 @@
-//Bibliothèque
 #include <FlexiTimer2.h>
-
+#include <mcp_can.h>
+#include <SPI.h>
 
 // GPS Port D10
 #include <TinyGPS++.h>
@@ -17,6 +17,17 @@ unsigned char buffer[64];
 int count=0;  
 
 //Déclaration variables
+const int SPI_CS_PIN = 53;
+
+MCP_CAN CAN(SPI_CS_PIN);                                    // Set CS pin
+char carac;
+int swap=0;
+int taille=0;
+char messagee[5];
+
+
+
+
 const int currentSensorPin = A2;  //Capteur intensité 
 const int mVperAmp = 100;         //use 185 for 5A Module, and 66 for 30A Module
 const int capt = A0;              //Capteur tension
@@ -38,6 +49,7 @@ float CurrentValue;
 int rep=0;    
 int tourprog;
 int distance;
+int tour;
           
  void macro_temp(void)
 {                          //sous programme
@@ -49,7 +61,19 @@ int distance;
 void setup()
 
 {   
-    Serial2.begin(9600);
+     while (CAN_OK != CAN.begin(CAN_500KBPS))              // init can bus : baudrate = 500k
+
+    {
+
+        Serial.println("CAN BUS Shield init fail");
+
+        Serial.println(" Init CAN BUS Shield again");
+
+        delay(100);
+
+    }
+
+    Serial.println("CAN BUS Shield init ok!");
     //pinMode pour les 2 boutons
     pinMode(2, INPUT);
     pinMode(4, INPUT);
@@ -63,6 +87,8 @@ void setup()
     pinMode(BP_6, INPUT);
     FlexiTimer2::set(200,macro_temp);
     distance=126;
+    Serial3.begin(9600);
+    tour = -1;
     
 
 }
@@ -71,13 +97,13 @@ void setup()
 
 
 void loop(){
+ //communication avec antennes 
 tourprog=tourprog+1;
 Serial.println(tourprog);
   String RetourRaspPi, DemandeRaspPi; //Déclaration de 2 chaines contenant les messages de reception et de retour
   RetourRaspPi=String();//Initialisation avec rien
   DemandeRaspPi=o;
   Serial1.println(DemandeRaspPi);
-  Serial2.print(String(Vmesure) + ";" + String(CurrentValue) + ";" + String(baterie));
   ms=0;
   while (Serial1.available() < 1)// tant que on recois rien
 
@@ -139,8 +165,8 @@ Serial.println(tourprog);
   {
      Serial.println(""); // retour rasp^pi
   }
-                                     
-    {
+           //capteur                          
+    
         Vcapteur=(5.0/1023.0)*analogRead(capt);   //Convertion analogique numérique
         Vmesure=(Vcapteur-2.49)/0.0681 -0.25;
         Serial.print("Tension ");        
@@ -164,6 +190,36 @@ Serial.println(tourprog);
        {
         baterie=100; 
        }
+       {
+
+    Serial.println("debut");
+
+  //programma xbe
+
+    if(Serial3.readString() == "E" ) {
+
+        Serial.println("if");
+
+    
+
+       
+
+           
+
+        tour=tour+1;
+
+        Serial.println("tour(s) : ");
+
+        Serial.println(tour);
+
+    
+
+        Serial1.print("a");
+
+   delay(3000);       
+    }      
+     }
+    
        char GPS;
 
        // CODE GPS
@@ -173,10 +229,71 @@ Serial.println(tourprog);
         smartDelay(1000);
         if (millis() > 5000 && gps.charsProcessed() < 10)
           Serial.println(F("No GPS data received: check wiring"));
+//envoie donné pour écran
+
+
+
+if (swap==0)
+{
+
+if (CurrentValue >= 10.00)
+{
+  taille=5;
+}
+else 
+{
+  taille=4;
+}
+
+messagee[taille];
+dtostrf(CurrentValue,taille,2,messagee);
+Serial.print(messagee[0]); 
+Serial.print(messagee[1]); 
+Serial.print(messagee[2]); 
+Serial.print(messagee[3]); 
+Serial.print(messagee[4]); 
+swap=1;
+carac='I';Serial.println(carac);
+}
+
+
+else if (swap==1)
+{
+
+if (Vmesure >= 10.00)
+{
+  taille=5;
+}
+else 
+{
+  taille=4;
+}
+
+messagee[taille];
+dtostrf(Vmesure,taille,2,messagee);
+Serial.print(messagee[0]); 
+Serial.print(messagee[1]); 
+Serial.print(messagee[2]); 
+Serial.print(messagee[3]); 
+Serial.print(messagee[4]); 
+swap=0;
+carac='U';
+Serial.println(carac);
+}
+
+
+unsigned char stmp[6]={carac,messagee[0],messagee[1],messagee[2],messagee[3],messagee[4]};
+Serial.println("In loop");
+    // send data:  id = 0x00, standard frame, data len = 6, stmp: data buf
+    CAN.sendMsgBuf(0x70,0, 6, stmp);
+    delay(1000);                       // send data once per ms
+
+
+
 
          o=String(Vmesure) + ";" + String(CurrentValue) + ";" + String(gps.location.lat(), 6) + ":" + String(gps.location.lng(), 6) + ";4;5eme;" + String(ms);
          
-          }
+          
        digitalRead(BP_resetD);
        Serial.println(distance);
         if (BP_resetD == 1);
