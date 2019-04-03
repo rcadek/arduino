@@ -285,8 +285,8 @@
         ],
         "seg1": "70",
         "seg2": "90",
-        "x": 390,
-        "y": 260,
+        "x": 370,
+        "y": 240,
         "wires": []
     },
     {
@@ -321,8 +321,8 @@
         "label": "Vitesse moyenne",
         "format": "{{msg.average_speed}} km/h",
         "layout": "row-spread",
-        "x": 980,
-        "y": 320,
+        "x": 780,
+        "y": 420,
         "wires": []
     },
     {
@@ -574,7 +574,8 @@
                 "38943042.296b"
             ],
             [
-                "58fbbbed.d64594"
+                "58fbbbed.d64594",
+                "95bebc1c.7b5ca"
             ]
         ]
     },
@@ -1112,8 +1113,8 @@
         "func": "var msg;\nvar today = new Date();\nvar dd = today.getDate();\nvar mm = today.getMonth() + 1; //January is 0!\n\nvar yyyy = today.getFullYear();\nif (dd < 10) {\n  dd = '0' + dd;\n} \nif (mm < 10) {\n  mm = '0' + mm;\n} \nmsg.filename = '/home/pi/speed-history_' + dd + '_' + mm + '_' + yyyy + '.txt';\nmsg.payload = msg.payload + \";\";\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 370,
-        "y": 380,
+        "x": 350,
+        "y": 520,
         "wires": [
             [
                 "585eb25d.40f7fc"
@@ -1129,8 +1130,8 @@
         "appendNewline": false,
         "createDir": true,
         "overwriteFile": "false",
-        "x": 530,
-        "y": 380,
+        "x": 550,
+        "y": 520,
         "wires": [
             []
         ]
@@ -1150,11 +1151,11 @@
         "type": "function",
         "z": "a4f481d6.61699",
         "name": "Speed storage filename",
-        "func": "var msg;\nvar today = new Date();\nvar dd = today.getDate();\nvar mm = today.getMonth() + 1; //January is 0!\n\nvar yyyy = today.getFullYear();\nif (dd < 10) {\n  dd = '0' + dd;\n} \nif (mm < 10) {\n  mm = '0' + mm;\n} \nmsg.filename = '/home/pi/speed-history_' + dd + '_' + mm + '_' + yyyy + '.txt';\n\nreturn msg;",
+        "func": "var msg;\nvar today = new Date();\nvar dd = today.getDate();\nvar mm = today.getMonth() + 1; //January is 0!\n\nvar yyyy = today.getFullYear();\nif (dd < 10) {\n  dd = '0' + dd;\n} \nif (mm < 10) {\n  mm = '0' + mm;\n} \nmsg.filename = '/home/pi/speed-history_' + dd + '_' + mm + '_' + yyyy + '.txt';\n\nreturn msg;\n\n\n\n",
         "outputs": 1,
         "noerr": 0,
-        "x": 390,
-        "y": 320,
+        "x": 370,
+        "y": 360,
         "wires": [
             [
                 "ccb86858.3776b8"
@@ -1170,8 +1171,8 @@
         "format": "utf8",
         "chunk": false,
         "sendError": false,
-        "x": 570,
-        "y": 320,
+        "x": 430,
+        "y": 420,
         "wires": [
             [
                 "d8bd4699.7a9148"
@@ -1183,11 +1184,11 @@
         "type": "function",
         "z": "a4f481d6.61699",
         "name": "average",
-        "func": "var i;\nvar toto = 0;\nmsg.total = 0;\n\nmsg.speed_array = msg.payload.split(\";\");\n\nfor (i = 0; i < msg.speed_array.length; i++) {\n    if(!isNaN(Number(msg.speed_array[i]))) {\n        msg.total = msg.total + Number(msg.speed_array[i]);\n    } else {\n        toto = toto + 1;\n    }\n}\n\nmsg.array_size = msg.speed_array.length - 1 - toto;\n\nmsg.average_speed_unrounded = msg.total / msg.array_size;\n\nmsg.average_speed = Math.round( msg.average_speed_unrounded * 10 ) / 10\n\nreturn msg;\n",
+        "func": "var i;\nvar toto = 0;\nmsg.total = 0;\n\nmsg.speed_array = msg.payload.split(\";\");\n\nfor (i = 0; i < msg.speed_array.length; i++) {\n    if(!isNaN(Number(msg.speed_array[i]))) {\n        msg.total = msg.total + Number(msg.speed_array[i]);\n    } else {\n        toto = toto + 1;\n    }\n}\n\nmsg.array_size = msg.speed_array.length - 1 - toto;\n\nmsg.average_speed_unrounded = msg.total / msg.array_size;\n\nmsg.average_speed = Math.round( msg.average_speed_unrounded * 10 ) / 10\n\nreturn msg;\n\n\n",
         "outputs": 1,
         "noerr": 0,
-        "x": 740,
-        "y": 320,
+        "x": 560,
+        "y": 420,
         "wires": [
             [
                 "6323a818.a74d58"
@@ -1214,8 +1215,8 @@
         "links": [
             "28cec7c0.c361c8"
         ],
-        "x": 115,
-        "y": 380,
+        "x": 135,
+        "y": 360,
         "wires": [
             [
                 "af61aa63.567238",
@@ -1223,5 +1224,25 @@
                 "333fc5b1.98c58a"
             ]
         ]
+    },
+    {
+        "id": "30d52d2a.14f342",
+        "type": "comment",
+        "z": "a4f481d6.61699",
+        "name": "Store speed values in a file",
+        "info": "",
+        "x": 350,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "6103f026.79764",
+        "type": "comment",
+        "z": "a4f481d6.61699",
+        "name": "Get speed values and make an average",
+        "info": "",
+        "x": 390,
+        "y": 320,
+        "wires": []
     }
 ]
