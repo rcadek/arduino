@@ -50,6 +50,12 @@ int rep=0;
 int tourprog;
 int distance;
 int tour;
+const float pi=3.14;
+const float D=0.7;
+volatile float  signalDetectedMillis=0;
+volatile boolean  signalDetected=false;
+float t0=0;
+float prev_vkmh=0;
           
  void macro_temp(void)
 {                          //sous programme
@@ -80,7 +86,7 @@ void setup()
     pinMode(8, INPUT);
 
     //Serial pour la transmission sans fil
-    Serial.begin(115200);       //Serial 
+    Serial.begin(9600);       //Serial 
     ss.begin(GPSBaud);          //GPS
     Serial1.begin(19200);       //Serial antennes
     Vref = readVref();          //read the reference votage(default:VCC)
@@ -89,17 +95,84 @@ void setup()
     distance=126;
     Serial3.begin(9600);
     tour = -1;
-    
 
+    //Vitesse
+    pinMode(3,INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(3),isr,FALLING);
+    
+}
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------
+long readVref()
+
+{
+    long result;
+    #if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328__) || defined (__AVR_ATmega328P__)
+        ADMUX = _BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
+    #elif defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_AT90USB1286__)
+        ADMUX = _BV(REFS0) | _BV(MUX4) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
+        ADCSRB &= ~_BV(MUX5);  
+    #elif defined (__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__)
+        ADMUX = _BV(MUX5) | _BV(MUX0);
+    #elif defined (__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
+        ADMUX = _BV(MUX3) | _BV(MUX2);
+    #endif
+    #if defined(__AVR__)
+        delay(2);                                        
+        ADCSRA |= _BV(ADSC);                             
+        while (bit_is_set(ADCSRA, ADSC));
+            result = ADCL;
+            result |= ADCH << 8;
+            result = 1126400L / result;  
+        return result;
+    #elif defined(__arm__)
+        return (3300);                                  
+    #else
+        return (3300);                                 
+    #endif
+}
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------
+  void isr(void){
+  signalDetectedMillis=millis();
+  signalDetected=true;
+  }
+
+  float readDCCurrent(int Pin)
+{
+    int analogValueArray[31];
+    for(int index=0;index<31;index++)
+    {
+      analogValueArray[index]=analogRead(Pin);
+    }
+
+    int i,j,tempValue;
+    for (j = 0; j < 31 - 1; j ++)
+    {
+
+        for (i = 0; i < 31 - 1 - j; i ++)
+        {
+            if (analogValueArray[i] > analogValueArray[i + 1])
+            {
+                tempValue = analogValueArray[i];
+                analogValueArray[i] = analogValueArray[i + 1];
+                analogValueArray[i + 1] = tempValue;
+            }
+
+        }
+
+    }
+
+    float medianValue = analogValueArray[(31 - 1) / 2];
+    float DCCurrentValue = (medianValue / 1024.0 * Vref - Vref / 2.0) / mVperAmp; 
+    return DCCurrentValue;
 }
 
 
-
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 void loop(){
- //communication avec antennes 
-tourprog=tourprog+1;
-Serial.println(tourprog);
+ 
+ 
+     //communication avec antennes 
   String RetourRaspPi, DemandeRaspPi; //Déclaration de 2 chaines contenant les messages de reception et de retour
   RetourRaspPi=String();//Initialisation avec rien
   DemandeRaspPi=o;
@@ -190,35 +263,41 @@ Serial.println(tourprog);
        {
         baterie=100; 
        }
-       {
-
-    Serial.println("debut");
-
-  //programma xbe
-
-    if(Serial3.readString() == "E" ) {
-
-        Serial.println("if");
-
-    
-
        
 
-           
-
-        tour=tour+1;
-
+           //programme xbe
         Serial.println("tour(s) : ");
-
         Serial.println(tour);
+        Serial.println(Serial3.readString());
+    if(Serial3.readString() == "E" ) 
+    {  
 
-    
+        Serial.println("if");
+        tour=tour+1;
+        Serial.println("tour(s) : ");
+        Serial.println(tour);
+        Serial3.print("a");
+     delay(1000);       
+    }
+          //Vitesse      
+      {
+    float dt=0,new_vkmh=0,vkmh=0;
+      if(signalDetected){
+        signalDetected=false;
+      if(t0>0){
+        dt=(signalDetectedMillis-t0)/1000;
+        new_vkmh=(pi*D*3.6)/dt;
+       vkmh=(prev_vkmh+new_vkmh)/2;
+       prev_vkmh=new_vkmh;
+      }
+      t0=signalDetectedMillis;
+       } 
+  delay(200);
+  Serial.print("vkmh = ");
+  Serial.println(vkmh);
 
-        Serial1.print("a");
-
-   delay(3000);       
-    }      
-     }
+ 
+      }
     
        char GPS;
 
@@ -247,16 +326,10 @@ else
 
 messagee[taille];
 dtostrf(CurrentValue,taille,2,messagee);
-Serial.print(messagee[0]); 
-Serial.print(messagee[1]); 
-Serial.print(messagee[2]); 
-Serial.print(messagee[3]); 
-Serial.print(messagee[4]); 
+ 
 swap=1;
-carac='I';Serial.println(carac);
+carac='I';
 }
-
-
 else if (swap==1)
 {
 
@@ -271,27 +344,32 @@ else
 
 messagee[taille];
 dtostrf(Vmesure,taille,2,messagee);
-Serial.print(messagee[0]); 
-Serial.print(messagee[1]); 
-Serial.print(messagee[2]); 
-Serial.print(messagee[3]); 
-Serial.print(messagee[4]); 
-swap=0;
+
+swap=2;
 carac='U';
-Serial.println(carac);
+
+}
+else if ( swap==2)
+{
+  taille=1;
+    messagee[taille];
+   itoa(tour,messagee,10);
+   Serial.println(messagee);
+   swap=0;
+   carac='T';
 }
 
 
 unsigned char stmp[6]={carac,messagee[0],messagee[1],messagee[2],messagee[3],messagee[4]};
-Serial.println("In loop");
+
     // send data:  id = 0x00, standard frame, data len = 6, stmp: data buf
     CAN.sendMsgBuf(0x70,0, 6, stmp);
-    delay(1000);                       // send data once per ms
+    delay(10);                       // send data once per ms
 
 
 
 
-         o=String(Vmesure) + ";" + String(CurrentValue) + ";" + String(gps.location.lat(), 6) + ":" + String(gps.location.lng(), 6) + ";4;5eme;" + String(ms);
+         o=String(Vmesure) + ";" + String(CurrentValue) + ";" + String(gps.location.lat(), 6) + ":" + String(gps.location.lng(), 6) + ";4;"+String(tour) +";"+ String(ms);
          
           
        digitalRead(BP_resetD);
@@ -336,66 +414,10 @@ static void smartDelay(unsigned long ms)
   smartDelay(0);
 }
 
-float readDCCurrent(int Pin)
-{
-    int analogValueArray[31];
-    for(int index=0;index<31;index++)
-    {
-      analogValueArray[index]=analogRead(Pin);
-    }
 
-    int i,j,tempValue;
-    for (j = 0; j < 31 - 1; j ++)
-    {
 
-        for (i = 0; i < 31 - 1 - j; i ++)
-        {
-            if (analogValueArray[i] > analogValueArray[i + 1])
-            {
-                tempValue = analogValueArray[i];
-                analogValueArray[i] = analogValueArray[i + 1];
-                analogValueArray[i + 1] = tempValue;
-            }
-
-        }
-
-    }
-
-    float medianValue = analogValueArray[(31 - 1) / 2];
-    float DCCurrentValue = (medianValue / 1024.0 * Vref - Vref / 2.0) / mVperAmp; 
-    return DCCurrentValue;
-}
-long readVref()
-
-{
-    long result;
-    #if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328__) || defined (__AVR_ATmega328P__)
-        ADMUX = _BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
-    #elif defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_AT90USB1286__)
-        ADMUX = _BV(REFS0) | _BV(MUX4) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
-        ADCSRB &= ~_BV(MUX5);  
-    #elif defined (__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__)
-        ADMUX = _BV(MUX5) | _BV(MUX0);
-    #elif defined (__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
-        ADMUX = _BV(MUX3) | _BV(MUX2);
-    #endif
-    #if defined(__AVR__)
-        delay(2);                                        
-        ADCSRA |= _BV(ADSC);                             
-        while (bit_is_set(ADCSRA, ADSC));
-            result = ADCL;
-            result |= ADCH << 8;
-            result = 1126400L / result;  
-        return result;
-    #elif defined(__arm__)
-        return (3300);                                  
-    #else
-        return (3300);                                 
-    #endif
-}
-
+   
  
-
   //GPS
   void clearBufferArray()                     // function to clear buffer array
 
