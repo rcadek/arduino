@@ -14,12 +14,13 @@ int bp_cronostart;
 int debut=0;
 int totala;
 int totalb;
-const int BP2=4;
+const int BP3=3;
 DS1307 clock;//define a object of DS1307 class
-
+volatile boolean flag=false;
 const int SPI_CS_PIN = 53;
 String messagee;
 String reception;
+int tour;
 
 MCP_CAN CAN(SPI_CS_PIN);
 
@@ -30,9 +31,15 @@ float CurrentValue=0.123;
 int taille;
 int i=0;
 char detector;
+int vitesse;
 
 void setup() {
+
   
+    pinMode(BP3,INPUT);
+    attachInterrupt(digitalPinToInterrupt(BP3),macro_interrupt,RISING); //il faut brancher sur la PIN 3 le cable jaune 
+
+    
     while (CAN_OK != CAN.begin(CAN_500KBPS))              // init can bus : baudrate = 500k
     {
         Serial.println("CAN BUS Shield init fail");
@@ -41,11 +48,11 @@ void setup() {
     }
     Serial.println("CAN BUS Shield init ok!");
     clock.begin();
-    pinMode(BP2,INPUT);
+    
     genie.Begin(Serial1);
     genie.WriteContrast(15);
-    
     Serial1.begin(9600);
+    
     Serial.begin(9600);
 
 }
@@ -53,9 +60,7 @@ void setup() {
 void loop() {
     
   //chronometre:heure
-
-bp_cronostart=digitalRead(BP2);
-
+  
 if (bp_cronostart == 1 && debut==0)
       {
          printTimeset();
@@ -67,6 +72,7 @@ if (bp_cronostart == 1 && debut==0)
          Serial.println(secb);
          debut=1;
          delay(100);
+         bp_cronostart=0;
       }
 if (debut==1)
       {
@@ -84,12 +90,13 @@ if (debut==1)
         Serial.println(seca);
         
    
-        bp_cronostart=digitalRead(BP2);
+        
         if (bp_cronostart == 1)
               {
                 debut=0;
                 Serial.println("fin course");
                 delay(200);
+                bp_cronostart=0;
               }
       }
 
@@ -115,7 +122,7 @@ if (debut==1)
             char character=(buf[i]);
             character=character-'O'+79;
             Serial.print(character);
-            if (character != 'I' || character != 'U')
+            if (character != 'I' || character != 'U' || character !='T' || character !='V')
             {
             messagee=messagee+character;
             }
@@ -145,6 +152,18 @@ if (debut==1)
     Vmesure=messagee.toFloat();
     Serial.println(Vmesure);
    }
+   else if (detector=='T')
+   {
+    tour=messagee.toInt();
+    Serial.print("nombre de tour= ");
+    Serial.println(tour);
+   }
+   else if (detector=='V')
+   {
+    vitesse=messagee.toInt();
+    Serial.print("VITESSE= ");
+    Serial.println(vitesse); 
+   }
   
   baterie=(Vmesure*100)/52;
   Serial.print("Baterie= ");
@@ -154,18 +173,18 @@ if (debut==1)
     
        //écran
   
-       genie.DoEvents();
+  /*   genie.DoEvents();
                             
        genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0,  baterie);
        genie.WriteObject(GENIE_OBJ_LED_DIGITS, 1,  Vmesure*10);
        genie.WriteObject(GENIE_OBJ_LED_DIGITS, 2,  CurrentValue*10);
-      // genie.WriteObject(GENIE_OBJ_LED_DIGITS, 3, 2);
+       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 3, tour);
        //genie.WriteObject(GENIE_OBJ_LED_DIGITS, 4, heure);
        genie.WriteObject(GENIE_OBJ_LED_DIGITS, 5, minutea);
        genie.WriteObject(GENIE_OBJ_LED_DIGITS, 7, seca);
        //genie.WriteObject(GENIE_OBJ_LED_DIGITS, 6, 7);
        genie.WriteObject(GENIE_OBJ_GAUGE, 0, baterie);
-      // genie.WriteObject(GENIE_OBJ_ANGULAR_METER , 0, 24);
+      // genie.WriteObject(GENIE_OBJ_ANGULAR_METER , 0, 24);  */
 }
 
 
@@ -193,4 +212,9 @@ void calcultime()
   minutea=(secb-seca)/60;
   heurea=0;
   
+}
+void macro_interrupt(void) //Prototype de la macro d'interruption
+{
+  bp_cronostart=1;
+  Serial.println("UNE INTERRUPTION A ETE FAITE");
 }
