@@ -37,7 +37,7 @@ void setup() {
 
   
     pinMode(BP3,INPUT);
-    attachInterrupt(digitalPinToInterrupt(BP3),macro_interrupt,RISING); //il faut brancher sur la PIN 3 le cable jaune 
+    attachInterrupt(digitalPinToInterrupt(BP3),macro_interrupt,RISING);
 
     
     while (CAN_OK != CAN.begin(CAN_500KBPS))              // init can bus : baudrate = 500k
@@ -58,7 +58,8 @@ void setup() {
 }
 
 void loop() {
-    
+  
+    genie.DoEvents();
   //chronometre:heure
   
 if (bp_cronostart == 1 && debut==0)
@@ -71,6 +72,8 @@ if (bp_cronostart == 1 && debut==0)
          Serial.print(":");
          Serial.println(secb);
          debut=1;
+        
+         
          delay(100);
          bp_cronostart=0;
       }
@@ -89,6 +92,8 @@ if (debut==1)
         Serial.print(":");
         Serial.println(seca);
         
+        genie.WriteObject(GENIE_OBJ_LED_DIGITS, 5, minutea);
+        genie.WriteObject(GENIE_OBJ_LED_DIGITS, 7, seca);
    
         
         if (bp_cronostart == 1)
@@ -97,6 +102,7 @@ if (debut==1)
                 Serial.println("fin course");
                 delay(200);
                 bp_cronostart=0;
+               
               }
       }
 
@@ -145,46 +151,40 @@ if (debut==1)
     Serial.print("Intensite = ");
     CurrentValue=messagee.toFloat();
     Serial.println(CurrentValue);
+     genie.WriteObject(GENIE_OBJ_LED_DIGITS, 2,  CurrentValue*10);
    }
    else if (detector=='U')
    {
     Serial.print("Tension= ");
     Vmesure=messagee.toFloat();
     Serial.println(Vmesure);
+    baterie=(Vmesure*100)/52;
+    Serial.print("Baterie= ");
+    Serial.println(baterie);
+    genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0,  baterie);
+     genie.WriteObject(GENIE_OBJ_GAUGE, 0, baterie);
+    genie.WriteObject(GENIE_OBJ_LED_DIGITS, 1,  Vmesure*10);
    }
    else if (detector=='T')
    {
     tour=messagee.toInt();
     Serial.print("nombre de tour= ");
     Serial.println(tour);
+    genie.WriteObject(GENIE_OBJ_LED_DIGITS, 3, tour);
    }
    else if (detector=='V')
    {
     vitesse=messagee.toInt();
+   
     Serial.print("VITESSE= ");
     Serial.println(vitesse); 
+    genie.WriteObject(GENIE_OBJ_ANGULAR_METER , 0, vitesse);
    }
   
-  baterie=(Vmesure*100)/52;
-  Serial.print("Baterie= ");
-  Serial.println(baterie);
+ 
 
       
-    
-       //écran
-  
-  /*   genie.DoEvents();
-                            
-       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0,  baterie);
-       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 1,  Vmesure*10);
-       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 2,  CurrentValue*10);
-       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 3, tour);
-       //genie.WriteObject(GENIE_OBJ_LED_DIGITS, 4, heure);
-       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 5, minutea);
-       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 7, seca);
-       //genie.WriteObject(GENIE_OBJ_LED_DIGITS, 6, 7);
-       genie.WriteObject(GENIE_OBJ_GAUGE, 0, baterie);
-      // genie.WriteObject(GENIE_OBJ_ANGULAR_METER , 0, 24);  */
+        
 }
 
 
@@ -217,4 +217,12 @@ void macro_interrupt(void) //Prototype de la macro d'interruption
 {
   bp_cronostart=1;
   Serial.println("UNE INTERRUPTION A ETE FAITE");
+   //émission
+   unsigned char stmp[1]={"U"};
+
+    // send data:  id = 0x00, standard frame, data len = 6, stmp: data buf
+    CAN.sendMsgBuf(0x70,0, 1, stmp);
+ 
+    
+                    
 }
