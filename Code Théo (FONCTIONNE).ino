@@ -52,10 +52,12 @@ int distance;
 int tour;
 const float pi=3.14;
 const float D=0.7;
+
 volatile float  signalDetectedMillis=0;
 volatile boolean  signalDetected=false;
 float t0=0;
 float prev_vkmh=0;
+float vkmh_flemme;
           
  void macro_temp(void)
 {                          //sous programme
@@ -70,13 +72,9 @@ void setup()
      while (CAN_OK != CAN.begin(CAN_500KBPS))              // init can bus : baudrate = 500k
 
     {
-
-        Serial.println("CAN BUS Shield init fail");
-
+       Serial.println("CAN BUS Shield init fail");
         Serial.println(" Init CAN BUS Shield again");
-
         delay(100);
-
     }
 
     Serial.println("CAN BUS Shield init ok!");
@@ -95,7 +93,6 @@ void setup()
     distance=126;
     Serial3.begin(9600);
     tour = -1;
-
     //Vitesse
     pinMode(3,INPUT_PULLUP);
     attachInterrupt(digitalPinToInterrupt(3),isr,FALLING);
@@ -238,6 +235,7 @@ void loop(){
   {
      Serial.println(""); // retour rasp^pi
   }
+//--------------------------------------------------------------------------------------------------------------------------------------------------
            //capteur                          
     
         Vcapteur=(5.0/1023.0)*analogRead(capt);   //Convertion analogique numérique
@@ -264,7 +262,7 @@ void loop(){
         baterie=100; 
        }
        
-
+//----------------------------------------------------------------------------------------------------------------------------------------------------
            //programme xbe
         Serial.println("tour(s) : ");
         Serial.println(tour);
@@ -277,30 +275,30 @@ void loop(){
         Serial.println("tour(s) : ");
         Serial.println(tour);
         Serial3.print("a");
-     delay(1000);       
+          
     }
-          //Vitesse      
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+           //Vitesse      
       {
     float dt=0,new_vkmh=0,vkmh=0;
-      if(signalDetected){
-        signalDetected=false;
-      if(t0>0){
-        dt=(signalDetectedMillis-t0)/1000;
-        new_vkmh=(pi*D*3.6)/dt;
-       vkmh=(prev_vkmh+new_vkmh)/2;
-       prev_vkmh=new_vkmh;
-      }
-      t0=signalDetectedMillis;
-       } 
-  delay(200);
+  if(signalDetected){
+    signalDetected=false;
+    if(t0>0){
+      dt=(signalDetectedMillis-t0)/1000;
+      new_vkmh=(pi*D*3.6)/dt;
+      vkmh=(prev_vkmh+new_vkmh)/2;
+      prev_vkmh=new_vkmh;
+    }
+    t0=signalDetectedMillis;
+  }
   Serial.print("vkmh = ");
   Serial.println(vkmh);
+  vkmh_flemme=vkmh;
 
- 
       }
     
        char GPS;
-
+//---------------------------------------------------------------------------------------------------------------------------------------------------
        // CODE GPS
         Serial.print(gps.location.lat(), 6);
         Serial.print(";");
@@ -355,9 +353,18 @@ else if ( swap==2)
     messagee[taille];
    itoa(tour,messagee,10);
    Serial.println(messagee);
-   swap=0;
+   swap=3;
    carac='T';
 }
+else if (swap==3)
+{
+  taille=4;
+ messagee[taille];
+ dtostrf(vkmh_flemme,taille,2,messagee);
+ swap=0;
+ carac='V';
+}
+
 
 
 unsigned char stmp[6]={carac,messagee[0],messagee[1],messagee[2],messagee[3],messagee[4]};
@@ -368,17 +375,16 @@ unsigned char stmp[6]={carac,messagee[0],messagee[1],messagee[2],messagee[3],mes
 
 
 
-
-         o=String(Vmesure) + ";" + String(CurrentValue) + ";" + String(gps.location.lat(), 6) + ":" + String(gps.location.lng(), 6) + ";4;"+String(tour) +";"+ String(ms);
+         o=String(Vmesure) + ";" + String(CurrentValue) + ";" + String(gps.location.lat(), 6) + ":" + String(gps.location.lng(), 6) + ";"+String(vkmh_flemme)+";"+String(tour) +";"+ String(ms);
          
           
-       digitalRead(BP_resetD);
-       Serial.println(distance);
-        if (BP_resetD == 1);
+digitalRead(BP_resetD);
+Serial.println(distance);
+if (BP_resetD == 1);
         {
         distance=0;
         }
-    }     
+}     
 
 static void smartDelay(unsigned long ms)
 {
@@ -399,9 +405,7 @@ static void smartDelay(unsigned long ms)
     Serial.print('*');
     Serial.print(' ');
   }
-
   else
-
   {
     Serial.print(val, prec);
     int vi = abs((int)val);
@@ -414,9 +418,6 @@ static void smartDelay(unsigned long ms)
   smartDelay(0);
 }
 
-
-
-   
  
   //GPS
   void clearBufferArray()                     // function to clear buffer array
