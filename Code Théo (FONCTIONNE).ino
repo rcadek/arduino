@@ -24,7 +24,7 @@ char carac;
 int swap=0;
 int taille=0;
 char messagee[5];
-
+int BP=0;
 
 
 
@@ -372,10 +372,26 @@ unsigned char stmp[6]={carac,messagee[0],messagee[1],messagee[2],messagee[3],mes
     // send data:  id = 0x00, standard frame, data len = 6, stmp: data buf
     CAN.sendMsgBuf(0x70,0, 6, stmp);
     delay(10);                       // send data once per ms
+    unsigned char buf[1];
+    unsigned char len=0;
+ if(CAN_MSGAVAIL == CAN.checkReceive()) 
+ {
+  CAN.readMsgBuf(&len,buf);
+  char caractere=buf[0];
+  caractere=caractere-'O'+79;
+ Serial.println(caractere);
+  if (caractere='U' && BP==0)
+  {
+     BP=1;
+  }
+  else
+  {
+    BP=0;
+  }
+  
+}
 
-
-
-         o=String(Vmesure) + ";" + String(CurrentValue) + ";" + String(gps.location.lat(), 6) + ":" + String(gps.location.lng(), 6) + ";"+String(vkmh_flemme)+";"+String(tour) +";"+ String(ms);
+         o=String(Vmesure) + ";" + String(CurrentValue) + ";" + String(gps.location.lat(), 6) + ":" + String(gps.location.lng(), 6) + ";"+String(vkmh_flemme)+";"+String(tour) +";"+ String(ms)+";"+String(BP);
          
           
 digitalRead(BP_resetD);
