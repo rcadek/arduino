@@ -305,8 +305,11 @@ void loop(){
         Serial.println(gps.location.lng(), 6);
         smartDelay(1000);
         if (millis() > 5000 && gps.charsProcessed() < 10)
-          Serial.println(F("No GPS data received: check wiring"));
-//envoie donné pour écran
+        Serial.println(F("No GPS data received: check wiring"));
+          
+          
+          
+//-----------------------------------------envoie donné pour écran----------------------------------------------------------------------------------
 
 
 
@@ -325,6 +328,7 @@ else
 messagee[taille];
 dtostrf(CurrentValue,taille,2,messagee);
  
+          
 swap=1;
 carac='I';
 }
@@ -342,10 +346,8 @@ else
 
 messagee[taille];
 dtostrf(Vmesure,taille,2,messagee);
-
 swap=2;
 carac='U';
-
 }
 else if ( swap==2)
 {
@@ -372,7 +374,12 @@ unsigned char stmp[6]={carac,messagee[0],messagee[1],messagee[2],messagee[3],mes
     // send data:  id = 0x00, standard frame, data len = 6, stmp: data buf
     CAN.sendMsgBuf(0x70,0, 6, stmp);
     delay(10);                       // send data once per ms
-    unsigned char buf[1];
+       
+          
+          
+//---------------------------------Réception-pour-l'heure--------------------------------------------------------------------------------------
+
+          unsigned char buf[1];
     unsigned char len=0;
  if(CAN_MSGAVAIL == CAN.checkReceive()) 
  {
